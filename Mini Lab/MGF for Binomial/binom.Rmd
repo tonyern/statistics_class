@@ -1,0 +1,84 @@
+---
+title: "Variance of a Binomial"
+author: "Tony Nguyen"
+date: "February 8, 2019"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+# Introduction
+
+We have learnt that the MGF for a binimial random variable is:
+
+$$M_X(t) = (q+pe^t)^n $$
+
+Where $X\sim Bin(n,p)$
+
+# Tasks
+
+Using the moment generating function above prove that 
+
+$$\sigma^2 = npq$$
+
+by answering the tasks below. 
+Use $\LaTeX$ to construct the proof.
+
+## Task 1
+
+Start with 
+
+$$
+\begin{eqnarray}
+E(X) &=& \left . \frac{d M_X(t)}{dt}\right |_{t=0}\\
+\frac{dM_X(t)}{dt} &=& \frac{d}{dt}(q+pe^t)^n\\
+u &=& q+pe^t, m=u^n\\
+\frac{dM}{dt} &=& \frac{dM}{du}*\frac{du}{dt}\\
+\frac{dM}{dt} &=& \frac{dM}{dt}
+\end{eqnarray}
+$$
+
+
+## Task 2
+
+Now find $E(X^2)$
+
+$$
+\begin{eqnarray}
+E(X^2) &=& \left. \frac{d^2 M_X(t)}{dt^2}\right |_{t=0}\\
+\frac{d^2 M_X(t)}{dt^2} &=& E(X(X-1))+E(X)\\
+=n(n-1)p^2+np\\
+=n^2p^2-np^2+np
+
+\end{eqnarray}
+$$
+
+## Task 3
+
+Find $\sigma^2$ Using the formula $\sigma^2 =E(X^2)-\mu^2$
+Below I used substitution of E(X^2) and $\mu^2$.
+$$
+\begin{eqnarray}
+\sigma^2 =E(X^2)-\mu^2 = \mu_1-(\mu_2)^2\\
+\\
+\\
+\mu_1=\mu=\frac{d m_X(t)}{dt} |_{t=0}=n(pe^t+q)^(n-1)(pe^t) |_{t=0}\\
+=n(pe^0+q)^(n-1)(pe^0)\\
+\mu_1=\mu=n(p+q)^(n-1)p=n(1)^(n-1)p=np\\
+\\
+\\
+\mu_2=\mu=\frac{d^2 m_X(t)}{dt^2} |_{t=0}=np\frac{d}{dt}[e^t(pe^t+q)^(n-1)] |_{t=0}\\
+=np[e^t(n-1)(pe^t+q)^(n-2)pe^t+(pe^t+q)^(n-1)e^t] |_{t=0}\\
+=np[(1)(n-1)(1)p+(1)(1)]=np[(n-1)p+1]\\
+=np(np-p+1)=np(np+q)=n^2n^2+npq\\
+\\
+\\
+\sigma^2 =n^2p^2+npq-(np)^2=npq\\
+\end{eqnarray}
+$$
+
