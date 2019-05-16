@@ -1,0 +1,9 @@
+\frametitle{Use of \texttt {ciReg()}}
+
+\begin{verbatim}
+##             95 % C.I.lower    95 % C.I.upper
+## (Intercept)       -3.42716          22.42716
+## DOSE1-10         -14.78176          21.78176
+## DOSE11>          -21.28176          15.28176
+\end{verbatim}
+

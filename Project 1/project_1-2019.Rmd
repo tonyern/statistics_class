@@ -1,0 +1,160 @@
+---
+title: "Project 1"
+author: "Tony Nguyen"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    csl: biomed-central.csl
+    df_print: paged
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    number_sections: yes
+    theme: journal
+    toc: yes
+    toc_float: yes
+  word_document:
+    toc: yes
+    toc_depth: '4'
+  pdf_document:
+    df_print: kable
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+#bibliography: project.bib
+abstract: This project is all about analysing the SWDEFECTS file using R and probability theory. Here we are investigating data from the software defects file, SWDEFECTS.csv. We start by summarizing the data and then making a formula of how to calculate efficiency in catching defects. We then make a bar graph of the defects found. Afterwards we test the Accuracy, Detection Rate, False Alarm Rate, and Precision of capturing these defects. We then make a bar graph to better visual the process.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction to the data
+
+## Data and variables(see MS pg. 77,125)
+Describe the data and the problem we wish to investigate.
+
+## Summary Table 
+
+Creating the summary table (TABLE SIA3.2) found on page 125 in MS book.
+
+```{r}
+summary <- matrix(c("", "No", "Yes", "", "False", "a", "c", "", "True", "b", "d", ""), ncol = 3)
+
+colnames(summary) <- c("", "Module", "Has Defects")
+rownames(summary) <- c("", "Algorithm", "Predicts", "Defects")
+summary.table <- as.table(summary)
+summary.table
+```
+
+
+Using $\LaTeX$ construct the formulae for 
+
+1. Accuracy
+2. Detection rate
+3. False alarm rate
+4. Precision
+
+Latex Example: See (http://www.stat.cmu.edu/~cshalizi/rmarkdown/#elements-of-math-mode)
+
+$$
+\begin{eqnarray}
+P(|X-\mu| > k) & = & P(|X-\mu|^2 > k^2)\\
+& \leq & \frac{\mathbb{E}\left[|X-\mu|^2\right]}{k^2}\\
+& \leq & \frac{\mathrm{Var}[X]}{k^2}
+\end{eqnarray}
+$$
+
+# R functions
+Using the above definitions make R functions that will create the required probabilities:
+
+```{r accuracy, eval=TRUE}
+acc=function(a,b,c,d)
+{
+  (a + d)/(a + b + c + d)
+}
+```
+
+```{r detecton, eval=TRUE}
+detect=function(b,d)
+{
+  (d)/(b + d)
+}
+```
+
+```{r alarm, eval=TRUE}
+falarm=function(a,c)
+{
+  (c)/(a + c)
+}
+```
+
+```{r precision, eval=TRUE}
+prec=function(c,d)
+{
+  (d)/(c + d)
+}
+```
+
+
+# Create the tables in Figure SIA3.1
+Making the software defect table and a bar graph of it.
+```{r}
+softwareDefect <- matrix(c("LOC > 50", "v(g) > 10)", "ev(g) >= 14.5", "iv(g) >= 9.2", "LOC = lines of code", "v(g) = number of linearly independent paths", "ev(g) = number of subflow graphs with D-structured primes", "iv(g) = cyclomatic complexity of module's reduced flow graph"), ncol = 2)
+
+colnames(softwareDefect) <- c("Deflects Algorithm", "Definitions")
+
+rownames(softwareDefect) <- c("Lines of code", "Cyclomatic complexity", "Essential complexity", "Design complexity")
+
+softwareDefect.table <- as.table(softwareDefect)
+softwareDefect.table
+
+swd = read.csv("SWDEFECTS.csv")
+head(swd)
+tab1 = with(swd, table(c(predict.loc.50, predict.vg.10, predict.evg.14.5, predict.ivg.9.2, defect)))
+barplot(tab1, beside=TRUE, leg=TRUE)
+tab2 = addmargins(tab1)
+tab2
+```
+
+
+
+# TABLE SIA3.3 on page 127 in the MS Statistics book.
+
+Below we will create table SIA3.3 using the mybar() function. We will call the table tab3.
+
+>
+    1. tab ( this will be a n by m table) - like `tab3`
+    2. acc ( accuracy of the decimal output ) -- like `acc=4` for example
+
+SIA3.3 Table    
+```{r}
+tab3 <- matrix(c(0.843, 0.825, 0.990, 0.869, 0.408, 0.286, 0.041, 0.224, 0.091, 0.116, 0.018, 0.060, 0.333, 0.212, 0.200, 0.289), ncol=4)
+
+colnames(tab3) <- c('Accuracy', 'Detection Rate', 'False Alarm Rate', 'Precision')
+rownames(tab3) <- c("Lines of code", "Cyclomatic complexity", "Essential complexity", "Design complexity")
+
+tab3.table <- as.table(tab3)
+tab3.table
+```
+
+The function will need to create two things
+
+>
+    1. A barplot of the table
+    2. Commandline output in the form of a list containing the table
+
+mybar function
+```{r}
+mybar=function(tab, acc)
+{
+  barplot(round(tab, acc), col = rainbow(acc), legend = rownames(tab), beside = TRUE)
+}
+
+mybar(tab = tab3, acc = 4)
+```
+

@@ -1,0 +1,67 @@
+<!doctype html>
+
+
+<!-- template name: html.form.login.template.html -->
+
+<!-- Configurable default behavior for the Remember Username checkbox -->
+    <!-- set the checkbox to unchecked -->
+            
+<html lang="en" dir="ltr">
+<head>
+   <title>OU Sign In</title>
+  <base href="https://sso.ou.edu/"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=9">
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="assets/css/LogIn.css">
+  <script type="text/javascript" src="assets/js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="assets/js/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="assets/js/log-in.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="sign-in-container">
+		<div class="sign-in">
+			<div class="sign-in__block">
+				<div class="sign-in__box">
+					<div class="box__logo">
+						<img class="box__logo__img" src="assets/images/logo.png" alt="OU"/>
+					</div>
+
+					<div class="box__title">
+						<h4 class="box__title__heading">One account. One university.</h4>
+						<span class="box__title__text">Sign in to Canvas using your OU Email or OUNetID.</span>
+					</div>
+
+					<form id="loginForm" name="boxForm" class="box__form" action="/idp/yw7zG/resumeSAML20/idp/startSSO.ping" method="POST" novalidate>
+						<div id="labelEmailFocusActive" class="box__form__label box__form__label--email box__form__label--focus">OU Email or OUNetID</div>
+						<div id="labelEmailInvalid" class="box__form__label box__form__label--email box__form__label--invalid">Oops! OU Email or OUNetID is required.</div>
+						<div id="labelPasswordFocusActive" class="box__form__label box__form__label--password box__form__label--focus">Password</div>
+						<div id="labelPasswordInvalid" class="box__form__label box__form__label--password box__form__label--invalid">Oops! Password is required.</div>
+												<input id="ou-email" name="pf.username" value="" class="textbox textbox--gray" type="text" placeholder="OU Email or OUNetID" title="Email" required autofocus/>
+						<input id="ou-password" name="pf.pass" class="textbox textbox--gray" type="password" placeholder="Password" title="Password" required/>
+												
+												<input class="button button--blue" type="submit" value="Sign In" title="submit" /> 							
+					</form>
+
+					<div class="box__forgot">
+						<a class="box__link" href="https://accounts.ou.edu/Account/ForgotPassword" target="_blank">Forgot password?</a>
+					</div>
+					<div class="box__forgot__id">
+						<a class="box__link" href="https://account.ou.edu/Account/ForgotOUNetID" target="_blank">Forgot OUNetID?</a>
+					</div>
+				</div>
+				<div class="box__register">
+					<a class="box__register_link" href="https://accounts.ou.edu/Account/NewAccountSetup" target="_blank">New to OU? Set up your OU account.</a>
+				</div>
+			</div>
+			<div class="help">
+				Having trouble signing in? Let us help!
+				<a class="help__link" href="https://needhelp.ou.edu" target="_blank">needhelp.ou.edu</a>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
