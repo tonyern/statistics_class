@@ -1,0 +1,166 @@
+---
+title: 'Assignment 2'
+author: "Tony Nguyen"
+date: '`r format(Sys.Date(),format="%A, %B %d, %Y")`'
+output: 
+  html_document:
+    df_print: paged
+    fig_caption: true
+    highlights: pygments
+    number_sections: no
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE, fig.align='center'}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Questions{}
+
+## Q 1: 3.36 Fingerprint Expertise
+a) Given a pair of matched prints, what is the probability that an expert will fail to identify the match? Well the percentage they would identify the print is 92.12%. So the complement of that is 100-92.12 or 7.88% chance of the expert failing.
+
+b) Given a pair of matched prints, what is the probability that a novice will fail to identify the match? Well the percentage they would identify the print is 74.55%. So the complement of that is 100-74.55 or 25.45% chance of the novice failing.
+
+c) Assume the study included 10 participants, 5 experts and 5 novices. Suppose that a pair of matched prints are presented to a randomly selected study participant and the participle fails to identify the match. Is the participant more likely to be an expert or novice? I believe the participant is more likelt to be a novice because they have a higher chance of failing to identify the correct match.
+
+
+## Q 2: 3.52 Drug testing in athletes.
+a) Given the athlete is a user, find the probability that a drug test for testosterone will yield a positive result. (This probability represents the sensitivity of the drug test.) Given user and test positive, there are 100 users and 50 of them tested positive so the probability if testing positive is a 0.5 or 50% using $$\frac{50}{100} = 0.5$$
+
+b) Given the athlete is a nonuser, find the probability that a drug test for testosterone will yield a negative result. We have 900 non-users with 9 testing positive. That means 900-9=891 people testing negative. So using 
+
+$$\frac{891}{900}=0.99$$
+that means 0.99 or 99% chance of being a non-user and testing negative.
+
+c) If an athlete tests positive for testosterone, use Bayes' Rule to find the probability that the athlete is really doping.
+
+$$P(+|U) = \frac{P(+)P(U|+)}{P(+)P(U|+)+P(-)P(U|-)}$$
+We will be using the formula above. We get that there is a 0.50 or 50% chance of the athlete testing positive given that they are a user.
+
+## Q 3: Theorem 3.1 Multiplicative Rule
+The theorem is you have k number of sets along with each individual k set having n number of elements. We can create a table with y-axis being "a" and x-axis be "b". There are k number of a's and b's so a1, a2, ..., ak and b1, b2, ..., bk. In making the table, a and b are multipled together. So moving 1 unit in both axises, we take a1*b1, a2*b2, ..., ak*bk. We can grow this by increasing the value of k.
+
+
+## Q 4: Theorem 3.2 Permutations Rule
+The theorem is having a set N of different elements. We can select n elements from set N and arrange them within n positions in distinct order. Applying the multiplicative rule, once we fill the first position in set N we subtract 1 element available. Filling the second position in set N we subtract 2 and so on.
+P = N(N - 1)(N - 2)...(N - n + 1)
+
+
+## Q 5: Theorem 3.3 Partition Rule
+$$A = \frac{N!}{n_1!n_2!...n_k!}$$
+Above we have A equaling N over nk elements within N. We want to divide N into k sets with the first set being n1, second set being n2, and so on. With A being equal to that stuff on the right side, that is one way to arrange elements in N into k sets. By the multiplicative rule, A can also be a product of values. Example:
+$$P_N^N = N! = (A)(n_1!)(n_2!)...(n_k!)$$
+Above is where A is the number of ways to partition N into n1 elements in 1 and nk elements in k.
+
+## Q 6: Theorem 3.4 Combinations Rule
+A sample of n elements is to be chosen from a set N elements. The number of different samples that can be selected.
+$$(_n^N) = \frac{N!}{n!(N-n)!}$$
+Proof of 3.4 is using 3.3 in question 5. Basically we select an n from the set N and then substracting that selected n from set N, (N-n), to get the numbers that were not selected.
+
+
+## Q 7: 4.2 Dust Mite Allergies
+a) Verify that the probabilities for Y in the table sum to 1. y(0) + y(1) + y(2) + y(3) + y(4) = 1. 0.09 + 0.30 + 0.37 + 0.20 + 0.04 = 1.
+
+b) Find the probability that three or four of the homes in the sample have a dust mite level that exceeds 2 ug/g. So we are looking for P(x > 2) = 1 - P(x <= 2) = 1 - - P(x = 0) - P(x = 1) - P(x = 2) = 1 - 0.09 - 0.30 - 0.37 = 0.24. 
+
+c) Find the probability that fewer than two homes in the sample have a dust mite level that exceeds 2 ug/g. P(x < 2) = P(x = 0) + P(x = 1). P(0) = 0.09 and P(1) = 0.30. P(x < 2) = 0.09 + 0.30 = 0.39.
+
+## Q 8: 4.12 Downloading "apps" to your cell phone
+a) Show that the properties of a probability distribution for a discrete random variable are satisfied. It is satisfied when adding all p(y) = 1. So adding 0.17+0.10+0.11+0.11+0.10+0.10+0.07+0.05+0.03+0.02+0.02+0.02+0.02+0.02+0.01+0.01+0.01+0.01+0.01+0.005+0.005 = 1
+
+b) Find P(Y>=10). P(Y>=10) = P(
+
+c) Find the mean and variance of Y. Mean is 4.655. Variance is 19.84.
+
+d) Give an interval that will contain the value of Y with a probability if at least 0.75. Around Y = 6 and Y = 7 would contain the probability of at least 0.75.
+
+## Q 9: 4.34 PHD's in engineering
+a) Find P(Y = 10). $$(0.70)^10*(0.30)^15 = 0.0013$$
+
+b) Find P(Y <= 5). P(Y <= 5) = P(0) + P(1) + P(2) + P(3) + P(4) + P(5)
+
+c) Find the mean and standard deviation for Y.
+Mean = n*p so Mean = 25*0.70 = 17.5 and Standard Deviation = n*p*q so 25*0.70*0.30 = 5.25
+
+d) Interpret the results.
+Mean being 17.5 means for each random sample averages around 17.5 graduates out of 25 earning a PhD. 5.25 standard deviation is the length away from the mean.
+
+
+# Q 10: 4.46: Railway track allocation
+a) What is the probability that exactly 5 trains are assigned to each of the 10 tracks?
+
+b) A track is considered underutilized if fewer than 2 trains are assigned to the track during the day. Find the probability that Track #1 is underutilized.
+
+
+# Q 11: 4.54: Is a product "green"?
+a) Give a formula for the probability distribution of Y.
+This is a negative binomial.
+
+b) What is E(Y)? Interpret the results.
+
+c) Find P(Y = 1). P(Y = 1) = P(1) = (0.18)(0.82)^(1-1) = 0.18 or 18%.
+
+d) Find P(Y > 2). P(Y > 2) = 1 - P(Y <= 2) = 1 - P(Y = 1) - P(Y = 2) = 1 - (0.18)(0.82)^(1-1) - (0.18)(0.82)^(2-1) = 1 - 0.18 - 0.1476 = 0.6724 or 67.24%.
+
+
+# Q 12: 4.66 On-site disposal of hazardous waste
+a) In a random sample of 10 of the 209 facilities, what is the expected number in the sample that treats hazardous waste on-site? Interpret this result.
+$$\frac{8}{209}*10 = 0.383$$
+0.383 is the expected number. These are the chances in the random sample picked of having a facility that treats hazardous waste on-site.
+
+b) Find the probability that 4 of the 10 selected facilities treat hazardous waste on-site. The probability is 0.000169.
+
+
+# Q 13: 4.78 Deep-draft vessel casualties
+a) Find the variance of Y. The variance is 0.03.
+
+b) Discuss the conditions that would make the researchers' Poisson assumption plausible. Poisson provides a model for the relative frequency of the number of rare events that may occur. Casualties, missing persons may not occur that often in deep-drafting. So it makes sense to use Poisson to help researchers model rare events such as injuries, death, missing person due to this activity.
+
+c) What is the probability that a deep-draft U.S. flag vessel will have no casualties in a 3-year period?
+$$P(0) = \frac{0.03^0*e^0.03}{0!} = 0.97$$
+
+
+# Q 14: 5.2 Exercise
+a) Find the value of c. c = 0.67.
+
+b) Find the cumulative distribution function F(y).
+$$F(y) = \frac{4}{3}y - \frac{y^2}{3}$$ 
+
+c) Compute F(0.4). 
+$$F(y) = \frac{4}{3}0.4 - \frac{0.4^2}{3} = 0.48$$
+
+d) Compare P(0.1 <= Y <= 0.6). Took the integral of c(2-y) where c is 0.67 from 0.1 and 0.6. The answer is 0.55.
+
+
+# Q 15: 5.10 Exercise
+a) Find the mean and variance of the amount of time in minutes the train is late. Mean is 0. Mean was found by taking the integral from -5 to 5 $$0.15 - (\frac{3y^2}{500})$$ For variance I did the same but multiple 0.15-3y^2/500 by y^2. Variance is 5.
+
+b) Find the mean and variance of the amount of time in hours the train is late. Mean is 0 and variance is 5.
+
+c) Find the mean and variance of the amount of time in seconds the train is late. Mean is 0 and variance is 5.
+
+
+# Q 16: 5.36 Alkalinity of river water
+a) Exceeding 45 mg/L. 0.9409149 or 94% from pnorm(45, mean = 50, sd = 3.2, lower.tail = TRUE).
+
+b) Below 55 mg/L. 0.05908512 or 5.9% from pnorm(55, mean = 50, sd = 3.2, lower.tail = FALSE).
+
+c) Between 51 and 52 mg/L. 0.1113 or 11.13% from pnorm(52, mean = 50, sd = 3.2)-pnorm(51, mean = 50, sd = 3.2).
+
+# Q 17: 5.38 NHTSA crash safety test
+a) Find the probability that the rating will fall between 500 and 700 points.
+pnorm(700, mean = 605, sd = 185)-pnorm(500, mean = 605, sd = 185) = 0.4110396 or 41%.
+
+b) Find the probability that the rating will fall between 400 and 500 points.
+pnorm(500, mean = 605, sd = 185)-pnorm(400, mean = 605, sd = 185) = 0.1512568 or 15%.
+
+c) Find the probability that the rating will be least than 850 points.
+pnorm(850, mean = 605, sd = 185, lower.tail = TRUE) = 0.9073023 or 91%.
+
+d) Find the probability that the rating will exceed 1000 points.
+pnorm(1000, mean = 605, sd = 185, lower.tail = FALSE) = 0.01637499 or 1.64%.
+
+e) What rating will only 10% of the crash-tested cars exceed? 

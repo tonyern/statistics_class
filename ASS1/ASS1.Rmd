@@ -1,0 +1,295 @@
+---
+title: "ASS1"
+author: "Tony Nguyen"
+date: "February 8, 2019"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+    highlights: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Check directory:
+```{r}
+getwd()
+```
+
+# Problem Number 1
+Here is a breakdown of the grading process of course MATH4753.
+
+The grading scale is standard. A is 90-100, B is 80-89, C is 70-79, D is 60-69, and F is under 50.
+
+Work load of the course:
+- 4 Assignments (15% of grade)
+- Labs (10% of grade)
+- 2 Projects (10% of grade)
+- Clicker Quizzes (10% of grade)
+- Book Chapter Quizzes on Canvas (5% of grade)
+- 2 Midterms (20% of grade)
+- Final (30% of grade)
+
+# Problem Number 2
+```{r}
+ddt = read.csv("DDT.csv")
+head(ddt)
+
+# a) Plot of length vs weight given river and species.
+coplot(LENGTH~WEIGHT|RIVER*SPECIES, number=3, data=ddt)
+
+# b) Interpret the lower left three conditional plots. The lower left three plots show the species of catfish in the FCM, LCM, and SCM rivers. 
+
+# c) What does line A do? Segmenting data from ddt and using factor of miles as a numeric value as a segmenting factor.
+m = with(ddt, as.numeric(factor(MILE)))
+
+# d) What does line B do? Line B takes only the unique values and gets the size of that.
+
+# e) Why are the top six plots empty? They are empty because the rivers FCM, LCM, and SCM don't contain the species LMASS and SMBUFFALO.
+
+# f) What is the mean value of DDT found in the sample of CCATFISH caught in the FCM river? The mean is 45.
+fcm_catfish = ddt[ddt$RIVER=="FCM" & ddt$SPECIES=="CCATFISH",]
+fcm_catfish_ddt = fcm_catfish$DDT
+mean(fcm_catfish_ddt)
+```
+
+# Problem Number 3
+Problem 1.14 in the book about National Bridge Inventory.
+a) Length of max span (feet). Quantitative
+b) Number of vehicle lanes. Quantutative
+c) Toll bridge? (yes or no). Qualitative
+d) Average daily traffic. Quantitative
+e) Condition of deck (good, fair, poor). Qualitative
+f) Bypass or detour length (miles). Quantitative
+g) Route type (interstate, U.S state, county, city). Qualitative
+
+# Problem Number 4
+Read pages in the book about random sampling.
+
+a) What are the names of the four random sampling designs (1 simple and 3 more complex). 
+Simple random, stratified random, cluster, and systemic samplings.
+
+b) Give a belief description of each.
+Simple random sampling is when we select items at random with no process.
+Stratified random sampling is when we can separate a population into two or more groups, called strata, and collect samples about those strata to form the overall sample.
+Cluster sampling is when we collect data from all units within a cluster.
+Systemic sampling is when we select a kth experimental unit from a population. For example, in a production line we can select every 50 items that pass through a certain area.
+
+# Problem Number 5
+Problem 1.15 in book. Groundwater contamination in wells.
+```{r}
+mtbe = read.csv("MTBE.csv", header = TRUE)
+head(mtbe) # First six lines.
+dim(mtbe) # Rows and columns.
+ind=sample(1:223,5,replace=FALSE) # Random indices.
+mtbe[ind,]
+
+# Omitting na from data frame.
+mtbeo = na.omit(mtbe)
+
+# Standard deviation of the depths of Bedrock well.
+depth = mtbeo[mtbeo$Aquifier=="Bedrock",]$Depth
+sd(depth)
+```
+
+# Problem Number 6
+Problem 1.16 in the book. Earthquakes.
+```{r}
+eq = read.csv("EARTHQUAKE.csv")
+
+v = sample(1:223, 5, replace=FALSE)
+eq[v,]
+
+# Plot
+plot(ts(eq$MAG))
+
+# Median of median of magnitude.
+median(median(eq$MAGNITUDE))
+```
+
+# Problem Number 7
+Read the story on page 18.
+
+a) What is the data collection method? The experiment was a designed experiment using stratified sample method.
+
+b) What is the population? Fishes and different species of them.
+
+c) What are the qualitative variables? Location and species of the fish.
+
+# Problem Number 8
+Page 2.1 Do social robots walk or roll?
+a) What type of graph is used to describe the data? A bar graph with frequencies.
+b) Identify the variable measured for each of the 106 robot designs. Variables: Legs only, wheels only, both legs and wheels, or none.
+c) Use the graph to identify the social robot design that is currently used the most. According to the graph, social robots built with legs only is the design used the most.
+d) Compute class relative frequencies for the different categories shown in the graph. None - 15, Both - 8, Legs - 63, Wheels - 20.
+e) Make a Pareto diagram.
+```{r}
+freq = c(15,8,63,20)
+RL = c("None","Both","LegsO","WheelsO")
+l = rep(RL,freq)
+
+# Pareto function from Dr. Stewart.
+pareto<-function(x,mn="Pareto barplot",...){  # x is a vector
+x.tab=table(x)
+xx.tab=sort(x.tab, decreasing=TRUE,index.return=FALSE)
+cumsum(as.vector(xx.tab))->cs
+length(x.tab)->lenx
+bp<-barplot(xx.tab,ylim=c(0,max(cs)),las=2)
+lb<-seq(0,cs[lenx],l=11)
+axis(side=4,at=lb,labels=paste(seq(0,100,length=11),"%",sep=""),las=1,line=-1,col="Blue",col.axis="Red")
+for(i in 1:(lenx-1)){
+segments(bp[i],cs[i],bp[i+1],cs[i+1],col=i,lwd=2)
+}
+title(main=mn,...)
+
+}
+
+pareto(l, "Social Robot Frequencies")
+```
+
+# Problem Number 9
+Book problem 2.4 page 27.
+```{r}
+securityFreq = c(32,6,12)
+RL1 = c("Windows 6","Explorer","Office")
+l1 = rep(RL1,securityFreq)
+names(securityFreq) <- RL1
+
+# a) Make a pie chart of the three products. Looking at the pie chart below, it shows that Explorer had the least amount of security issues.
+pie(securityFreq, col=1:4)
+
+# b) Make a pareto function.
+pareto(l1, "Security Issue Frequencies")
+```
+
+
+# Problem Number 10
+Book problem 2.10.
+```{r}
+swd = read.csv("SWDEFECTS.csv")
+head(swd)
+library(plotrix)
+tab = table(swd$defect)
+rtab = tab/sum(tab)
+round(rtab, 2)
+pie3D(rtab, labels = list("OK", "Defective"), main = "Pie plot of SWD")
+```
+
+# Problem Number 11
+Book problem 2.72 page 70.
+```{r}
+# a) Constructing histogram for old voltage.
+voltage = read.csv("VOLTAGE.csv")
+oldData = subset(voltage, subset = LOCATION=="OLD")
+oldDataTable = with(oldData,table(VOLTAGE))
+barplot(oldDataTable, space = 0, main = "Relative Frequency of Old Voltage")
+
+# b) Make a stem plot of old voltage.
+stem(oldDataTable)
+
+# c) Now make a histogram of the new voltage.
+new=subset(voltage,subset=LOCATION=="NEW")
+new$VOLTAGE->vtn
+vtn
+max(vtn)
+min(vtn)
+lept<-min(vtn)-0.05
+rept<-max(vtn)+0.05
+rnge<-rept-lept
+inc<-rnge/9
+inc
+seq(lept, rept,by=inc)->cl
+cl
+cvtn<-cut(vtn,breaks=cl)
+new.tab=table(cvtn)
+barplot(new.tab,space=0,main="Frequency Histogram of New Voltage",las=2)
+hist(vtn,nclass=10)
+
+# d) Compare graphs of a and c. Does it appear that the manufacturing process can be established locally? Yes it appears so.
+
+# e) Find and interpret the mean, median, and mode. Mean is the preferred method of central tendency.
+# Old data:
+mean(oldData$VOLTAGE) # This is the average of the voltage in the old set.
+median(oldData$VOLTAGE) # This is the middle-most voltage reading.
+
+# Get mode function I got from https://www.tutorialspoint.com/r/r_mean_median_mode.htm
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(oldData$VOLTAGE) # This is the most-frequent voltage reading.
+
+# New data:
+mean(new$VOLTAGE) # This is the average of the voltage in the old set.
+median(new$VOLTAGE) # This is the middle-most voltage reading.
+getmode(new$VOLTAGE) # This is the most-frequent voltage reading.
+
+# f) z-score for old voltage.
+zold = oldData$VOLTAGE
+z1 = (10.50 - mean(zold))/sd(zold)
+z1
+
+# g) z-score for new voltage.
+znew = new$VOLTAGE
+z2 = (10.50 - mean(znew))/sd(znew)
+z2
+
+# h) Based on the results of f) and g) at which location is a voltage reading of 10.50 more likely to occur? Explain. The voltage reading of 10.50 is more likely to occur at the old voltage because according to z-score, the closer the value is to 0 the higher the frequency of occurance. My conclusion is since the old voltage had the higher z-score then 10.50 is likely to occur.
+
+# i) Construct a box plot for the data at the old location. Yes, outliers were detected. 
+boxplot(zold, col = c("green3"), main = "Voltage Readings for Old Data", xlab = "Voltage", ylab = "Frequency", notch = TRUE, horizontal = TRUE)
+
+# j) Use the method of z-scores to detect outliers at the new location.
+z1 = as.data.frame(z1)
+z1[abs(z1)>=2 & abs(z1)<=3]
+
+# k) Construct a box plot for the data at the new location. Yes, outliers were detected. No outliers were detected.
+boxplot(znew, col = c("green3"), main = "Voltage Readings for New Data", xlab = "Voltage", ylab = "Frequency", notch = TRUE, horizontal = TRUE)
+
+# l) Use the method of z-scores to detect outliers at the new location. There are none.
+
+# m) Compare the distributions of parts i and k side-by-side. Part i old plot is more tightly-packed and closer to the 10.5 voltage. Part k new plot is more spread out and further from 10.5 voltage.
+```
+
+
+# Problem Number 12
+Book problem 2.73 surface roughness of pipe.
+Give an internal that will likely contain about 95% of all coated pipe roughness measurements.
+Using the Empirical Rule we calculate the mean and standard deviation to find the intervals where 95% of the data lie. So calculating the standard deviations I found that 95% of all coated pipe roughness measurements lie between 1.65-2.11.
+
+# Problem Number 13
+Book problem 2.80 Mongolian desert ants.
+a) Find the mean, median, and mode for the number of ant species discovered at the 11 sites. Mean is 12.82. Mode is 4 and 5. Medium is 5.
+b) 
+c) Mean, median, and mode for the total plant cover percentage at the 5 dry steppe sites. Mean is 40.4. Median is 40. Mode is 40.
+d) Now for the 6 Gobi desert sites. Mean is 28. Median is 26. Mode is 30.
+e) Yes the center of total plant cover percentage distribution appears to be different in these two regions.
+
+# Problem Number 14
+Book problem 2.84.
+```{r}
+# a) Use a graphical method to describe the velocity distribution of galaxy cluster A1775.
+gal = read.csv("GALAXY2.csv")
+head(gal)
+plot(gal$Velocity)
+
+# b) Is there evidences to support the double cluster theory? No because there seems to be two lines of galaxies and there is a separation inbetween.
+plot(gal$VELOCITY)
+
+# c) Find the mean and standard deviation of the galaxy velocity.
+mean(gal$VELOCITY)
+
+sd(gal$VELOCITY)
+
+# d) Suppose there is a galaxy with a velocity of 20,000 km/s. Is this galaxy likely to belong to A1775A or A1775B? Explain. Likely that galaxy would belong in A1775B because A1775B is moving around 20,000 km/s or less. 
+```
+
+# Problem Number 15
+```{r}
+library(ggplot2)
+g1 = ggplot(ddt, aes(x = RIVER, y = LENGTH)) + geom_boxplot(aes(fill = SPECIES)) + ggtitle("Tony Nguyen")
+print(g1)
+```

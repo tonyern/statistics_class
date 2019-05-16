@@ -1,0 +1,267 @@
+---
+title: 'Assignment 3'
+author: "Tony Nguyen"
+date: '`r format(Sys.Date(),format="%A, %B %d, %Y")`'
+output: 
+  html_document:
+    df_print: paged
+    fig_caption: true
+    highlights: pygments
+    number_sections: no
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE, fig.align='center'}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Questions{}
+Attempted 13/16 problems.
+
+## Q1: 5.54 page 215.
+Phishing Attacks to email accounts.
+
+a) What is the probability of observing an interarrival time of at least 2 minutes? After showing the calculation below the answer is 0.2826.
+```{r}
+phishing = read.csv("PHISHING.csv")
+pexp(2, rate = 1/95)
+mean(phishing$INTTIME)
+sd(phishing$INTTIME)
+```
+
+b) Do the data appear to follow an expononential distribution with Beta = 95? If the exponential distribution is beta = 95. If beta is 95 then mean is 95, standard deviation is 95, and variance is 9025. My conclusion is that the mean and standard deviation of phishing are close and likely follow the expononential distribution.
+
+## Q2: 5.56 page 215.
+Flood level analysis.
+
+a) Find the mean and variance of the maximum flood level over a 4-year period for the Susquehanna river. Mean is 0.21 and variance is 0.0147 (proof is below).
+$$
+\mu = \alpha * \beta = 3 * 0.07 = 0.21 \\
+\sigma^2 = \alpha * \beta^2 = 3 * (0.07)^2 = 0.0147 \\
+$$
+
+b) Would you expect to observe a value this high from a gamma distribution with alpha = 3 and beta = 0.07? What can you infer about the maximum flood level distribution for the 4-year period observe? I have found the values to be between 0.1659 and 0.2541. No I would not expect a maximum flood level to be that high. I can infer that this is an outlier.
+
+## Q3: 5.60 page 216.
+Reaction to tear gas.
+
+a) Find the mean length of time required to generate a human reaction to tear gas formula A. Find the mean for formula B. Mean for formula A is 4 and formula B is also 4.
+$$
+\mu_A = \alpha * \beta = 2 * 2 = 4 \\
+\mu_B = \alpha * \beta = 1 * 4 = 4 \\
+$$
+
+b) Find the variances for both distributions. Formula A has a variance of 8 and formula B has a variance of 16.
+$$
+\sigma_A^2 = \alpha * \beta^2 = 2 * (2)^2 = 8 \\
+\sigma_B^2 = \alpha * \beta^2 = 1 * (4)^2 = 16 \\
+$$
+
+c) Which tear gas has a higher probability of generating a human reaction in less than 1 minute? Formula B has a higher probabilty of generating a respond within a minute. With the values calculated below, it shows that formula B has a higher probability of generating a human reaction within one minute.
+```{r}
+# Formula A:
+pgamma(1, shape = 2, scale = 2)
+# Formula B:
+pgamma(1, shape = 1, scale = 4)
+```
+
+## Q4: 5.74 page 219.
+Washing machine repair time.
+
+a) If the manufacturer guarantees all machines against a major repair for 2 years, what proportion of all new washers will have to be repaired under the guarantee? The proportion is 0.63212. Work is below.
+```{r}
+pweibull(2, shape = 4,scale = 2)
+```
+
+b) Find the mean and standard deviation of the length of time until a major repair is required. Mean is 1.77246 and standard deviation is 0.9265 (proof is below).
+$$
+\mu = \beta^\frac{1}{\alpha}*\gamma(\frac{\alpha+1}{\alpha}) \\
+\mu = 4^\frac{1}{2}*\gamma(\frac{2+1}{2}) \\
+\mu = 4^\frac{1}{2}*\gamma(1.5) \\
+\mu = 2*0.88623 \\
+\mu = 1.77246 \\
+$$
+
+$$
+\sigma^2 = \beta^\frac{2}{\alpha}[\gamma(\frac{\alpha+2}{\alpha})-\gamma^2(\frac{\alpha+1}{\alpha})] \\
+\sigma^2 = 4^\frac{2}{2}[\gamma(\frac{2+2}{2})-\gamma^2(\frac{2+1}{2})] \\
+\sigma^2 = 4*[\gamma(2)-\gamma^2(1.5)] \\
+\sigma^2 = 4*[2-\gamma^2(1.5)] \\
+\sigma = 0.9265 \\
+$$
+
+c) Find P(mu - 2sig <= Y <= mu + 2sig). Work: P(1.77246-2(0.9265) <= Y <= 1.77246+2(0.9265)) so this simplifies to P(-0.08054 <= Y <= 3.62546). Final answer is (-0.08054, 3.62546).
+
+d) Is it likely that Y will exceed 6 years? Not very likely.
+```{r}
+pweibull(6, shape = 4, scale = 2, lower.tail = FALSE)
+```
+
+
+## Q5: 5.84 page 223.
+
+a) Find the mean and variance of Y. Alpha = 2, Beta = 9. I got that mean is 0.18182 and variance is 0.01240 (proof is below).
+$$
+\mu = \frac{\alpha}{\alpha + \beta} = \frac{2}{2 + 9} = 0.18182 \\
+\sigma^2 = \frac{\alpha * \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)} = \frac{2 * 9}{(2 + 9)^2(2 + 9 + 1)} = 0.012396692 = 0.0.1240
+$$
+
+b) Compute the probability that for any randomly selected year, at least 40% of the hardware repair budget is used to repair the laser color printer.
+```{r}
+1-pbeta(0.40, shape1 = 2, shape2 = 9)
+```
+
+c) What is the probability that at most 10% of the yearly repair budget is used for the laser color printer?
+```{r}
+pbeta(0.10, shape1 = 2, shape2 = 9)
+```
+
+## Q6: 5.1114 page 223.
+
+a) What are the values of alpha and beta? Alpha is 2 and Beta is 16.
+
+b) Compute the mean and variance of Y. Mean = 3.545 and variance = 3.4335 (proof is below).
+$$
+\mu = \beta^\frac{1}{\alpha}*\gamma(\frac{\alpha + 1}{\alpha}) \\
+\mu = 16^\frac{1}{2}*\gamma(1.5) \\
+\mu = 4*0.88623 = 3.545 \\
+$$
+
+$$
+\sigma^2 = \beta^\frac{2}{\alpha}[\gamma(\frac{\alpha+2}{\alpha})-\gamma^2(\frac{\alpha+1}{\alpha})] \\
+\sigma^2 = 16^\frac{2}{2}[\gamma(\frac{2+2}{2})-\gamma^2(\frac{2+1}{2})] \\
+\sigma^2 = 16*[\gamma(2)-\gamma^2(1.5)] \\
+\sigma^2 = 16*[2-\gamma^2(1.5)] = 3.4335 \\
+$$
+
+c) Find the probability that a new memory chip will not fail before 6 years. The answer is 0.1054.
+```{r}
+1-pweibull(6, shape = 2, scale = sqrt(16))
+```
+
+
+## Q7: 6.2 page 239.
+Tossing dice.
+
+a) Find the joint probability distribution p(x,y).
+$$ p(x,y) = \frac{1}{6*6} = \frac{1}{36} $$
+
+b) Find the marginal probability distribution p1(x) and p2(y).
+$$ 
+p_1(x) = p(x) = \frac{1}{6} \\
+p_2(y) = p(y) = \frac{1}{6} \\
+$$
+
+c) Find the conditional probability distributions p1(x|y) and p2(y|x).
+$$ 
+p_1(x|y) = \frac{p(x,y)}{p_2(y)} = \frac{1/36}{1/6} = \frac{1}{6} \\
+p_2(y|x) = \frac{p(x,y)}{p_1(x)} = \frac{1/36}{1/6} = \frac{1}{6} \\
+$$
+
+d) Compare the probability distributions of part b and c. What phenomenon have you observed. I have observed that x and y are independent because of p(x)=p(x|y) and p(y)=p(y|x).
+
+## Q8: 6.4 page 240.
+Modeling the behavior of granular media.
+
+a) Find the bivariate probability distribution p(x,y).
+$$p(x,y) = \frac{0.25 + x - y}{5}$$
+
+b) Find the marginal distribution, p1(x).
+
+## Q9: 6.12 page 244.
+Distribution of low bids.
+
+a) Find f(y), the marginal density function for Y. Do you recognize this distribution? No I do not recognize that distribution.
+$$ f(y) = \int_{-oo}^{oo} f(x,y)dx = \int_{-oo}^{oo}  \frac{e^{\frac{-y}{10}}}{10y} $$
+
+b) What is the mean DOT estimate, E(Y)?
+$$
+E(Y) = \frac{1}{\lambda = \beta = 10}
+$$
+
+## Q10: 6.14 page 245.
+Servicing an automobile.
+
+a) Find the value of c that makes f(x,y) a probability density function. c = 2 makes f(x,y) a probability density function (proof is below).
+$$
+c\int_{0}^{oo} \int_{0}^{x} e^{-x^2} dydx \\
+c\int_{0}^{oo} ye^{-x^2} dx \\
+c*\frac{1}{2} = 1 \\
+c = 2 \\
+$$
+
+b) Find the marginal density for X and show that f1(x)dx = 1. Work is in LaTex below.
+$$
+\int_{-oo}^{oo} f_1(x)dx = \int_{0}^{oo} 2e^{-x^2} dx = 2\int_{0}^{oo} = \sqrt(\pi) = 1
+$$
+
+c) Show that the conditional density for Y given X is a uniform distribution over the interval 0<=Y<=X. The final answer is 1/x and the proof for that is below.
+$$
+f_2(y|x) = \frac{f(x,y)}{f_1(x)} \\
+Where: \\f(x,y) = 2e^{-x^2} \\
+f_1(x) = 1 \\
+f_2(y|x) = 2e^{-x^2} \\
+$$
+
+## Q11: 6.51 page 253.
+As an illustration of why the converse of Theorem 6.6 is not true, consider the joint distribution of two discrete random variables, X and Y, shown in the accompanying table. Show that Cov(X,Y)=0, but that X and Y are dependent. 
+
+## Q12: 6.74 page 269.
+
+a) Find E(ybar) and interpret its value.
+$$ E(\bar{Y}) = \mu $$
+
+b) Find Var(ybar).
+
+c) Describe the shape of the sampling distribution of ybar. It is normally distributed.
+
+d) Find the probability that ybar is between 1.5 ppm and 2.5 ppm.
+```{r}
+pnorm(2.5)-pnorm(1.5)
+```
+
+
+e) Find the probability that ybar exceeds 2.2 ppm.
+```{r}
+pnorm(2.2)
+```
+
+
+## Q13: 6.90 page 273.
+Mercury contamination of swordfish.
+
+a) Use the normal approximation to the binomal to calculate the probability that fewer than 2 of the 20 swordfish pieces have mercury levels exceeding the FDA limits.
+```{r}
+
+```
+
+b) Use the normal approximation to the binomal to calculate the probability that more than half of the 20 swordfish pieces have mercury levels exceeding the FDA limits.
+```{r}
+
+```
+
+## Q14: 7.108 page 362.
+Lead and copper in drinking water.
+
+S of Lead levels: 3.92
+Mean Lead Levels in the lake:
+$$ \mu = \frac{1.32+0+13.1+0.919+0.657+3+1.32+4.09+4.45+0}{10} = 2.89 $$
+S of Copper levels: 0.25
+Mean Copper levels in the lake:
+$$ \mu = \frac{0.508+0.279+0.329+0.904+0.221+0.283+0.475+0.130+0.220+0.743}{10} = 0.410 $$
+
+a) Construct a 99% confidence interval for the mean lead level in water specimens from Crystal Lake Manors.
+
+b) Construct a 99% confidence interval for the mean copper level in water specimens from Crystal Lake Manors.
+
+c) Interpret the intervals, parts a and b, in the words of the problem. We have the means of lead and copper levels in a lake. We took multiple samples and tested it and calculated the means. The means ranged widely. With the 99% confidence interval, we have an interval that the whole lake's mean maybe located.
+
+d) Discuss the meaning of the phrase, “99% confident.” Confidence intervals is a range where data is likely to be accurate. 99% confident means a larger interval than something like a 90% confidence interval.
+
+## Q15: 7.114 page 364.
+Solar irradiation study.
+
+## Q16: 7.116 page 364.
+Diazinon residue in orchards.

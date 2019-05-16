@@ -1,0 +1,253 @@
+---
+title: 'Assignment 3'
+author: "Tony Nguyen"
+date: '`r format(Sys.Date(),format="%A, %B %d, %Y")`'
+output: 
+  html_document:
+    df_print: paged
+    fig_caption: true
+    highlights: pygments
+    number_sections: no
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE, fig.align='center'}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Questions{}
+
+Completed 9/10 problems completely.
+
+## Question 1
+7.118 Extinct New Zealand Birds - page 364
+
+a) Use a random number generator to select a random sample of 35 species from the NZBIRDS file.
+```{r Q1A}
+nzbirds = read.csv("NZBIRDS.csv")
+set.seed(51)
+randomBirds = na.omit(sample(nzbirds, size = 35, replace = TRUE))
+```
+
+b) Calculate the mean and standard deviation for the 35 sampled values of body mass. Then, use this information to construct a 95% confidence interval for the mean body mass of all 116 bird species.
+```{r Q1B}
+# Getting size, mean, and standard deviation of sample.
+meanBirds = mean(randomBirds$Body.Mass.1)
+meanBirds
+lengthBirds = length(randomBirds$Body.Mass.1)
+sdBirds = sd(randomBirds$Body.Mass.1)
+
+# Now calculating 95% CI with info found.
+t = qt(0.95, meanBirds)
+t
+ci = c()
+ci[1] = meanBirds-t*(sdBirds/sqrt(lengthBirds))
+ci[2] = meanBirds+t*(sdBirds/sqrt(lengthBirds))
+ci
+```
+
+c) Give a practical interpretation of the interval, part b.
+From our calculations the lower number is 4308.457 and upper number is 13917.629. 95% CI is where if the percentage goes up then the bounds would get closer together and farer if percentage goes down. 95% CI tells us the likelihood of data appearing between the lower and upper bounds.
+
+d) Check to see if the true mean, mu, is included in the confidence interval, part b. Explain why the interval is very likely to contain mu. mu is 9113.043 and it is in the interval (4308.457, 13917.629). Why this interval likely contains mu is because mu appears between the lower and upper bounds.
+
+e) Repeat parts b-d for the 35 sampled values of egg length.
+```{r Q1E}
+# Getting size, mean, and standard deviation of sample.
+meanEggs = mean(randomBirds$Egg.Length)
+meanEggs
+lengthEggs = length(randomBirds$Egg.Length)
+lengthEggs
+sdEggs = sd(randomBirds$Egg.Length)
+sdEggs
+
+# Now calculating 95% CI with info found.
+t = qt(0.95, meanEggs)
+t
+ci = c()
+ci[1] = meanEggs-t*(sdEggs/sqrt(lengthEggs))
+ci[2] = meanEggs+t*(sdEggs/sqrt(lengthEggs))
+ci
+
+# The interpretation of this interval is this is where most of the data appears. mu likely appears between the intervals therefore mu will likely appear here.
+```
+
+f) Ecologists also want to compare the proportions of flightless birds for two New Zealand bird populations-those that are extinct and those that are not extinct. Use the sample information in the table below to perform a 95% confidence interval for the difference between the proportion of flightless birds for extinct and nonextinct species.
+
+g) The ecologists are investigating the theory that the proportion of flightless birds will be greater for extinct species than for nonextinct species. Does the confidence interval, part f, support this theory? Explain.
+
+## Question 2
+7.120 Strength of epoxy-repaired joints - page 365
+
+a) Estimate the difference between the mean shear strengths of epoxy-repaired truss joints for the two species of wood with a 90% confidence interval. Based on the null hypothesis, there is no significant differences between the mean shear strength of the two woods.
+
+b) Construct a 90% confidence interval for the ratio of the shear stress variances of epoxy-repaired truss joints for the two species of wood. Based on this interval, is there evidence to indicate that the two shear stress variances differ? Explain. Based on the results below, there is evidence that the variances differ.
+```{r Q2B}
+# CI for Southern pine and Ponderosa pine.
+ci = c()
+ci[1] = (1312-1352)-1.645*(sqrt((422^2/100)+(271^2/47)))
+ci[2] = (1312-1352)+1.645*(sqrt((422^2/100)+(271^2/47)))
+ci
+```
+
+## Question 3
+7.128 Word problem - page 367
+
+a) Show that y^2/sigma^2 has a chi-square distribution with 1 degree of freedom. (Hint: The result follows directly from Theorem 6.11.) So we have that y is normally distributed with mu = 0 and sigma. Z^2 would have a chi^2 distribution with one degree of freedom.
+$$
+Z = \frac{Y-\mu}{\sigma} = \frac{Y-0}{\sigma} = \frac{Y}{\sigma} \\
+Z^2 = \frac{Y^2}{\sigma^2} \\
+P(\chi^2_{1-\frac{\alpha}{2}} <= \frac{Y^2}{\sigma^2} <= \chi_{\frac{\alpha}{2}}) = 1 - \alpha \\
+
+P(\frac{1}{\chi^2_{1-\frac{\alpha}{2}}} >= \frac{\sigma^2}{Y^2} >= \frac{1}{\chi_{\frac{\alpha}{2}}}) = P(\frac{1}{\chi^2_{1-\frac{\alpha}{2}}} <= \frac{\sigma^2}{Y^2} <= \frac{1}{\chi_{\frac{\alpha}{2}}}) \\
+$$
+
+$$
+= P(\frac{Y^2}{\chi^2_{\frac{\alpha}{2}}} <= \sigma^2 <= \frac{Y^2}{\chi^2_{1-\frac{\alpha}{2}}}) \\
+
+\chi^2=\frac{(n-1)s^2}{\sigma^2} \\
+$$
+
+b) Derive a 95% confidence interval for sigma^2 using y^2/sigma^2 as a pivotal statistic. CI derived above.
+
+## Question 4
+8.24 Surface roughness of pipe - page 390
+a) Give the null and alternative hypotheses for testing whether the mean surface roughness of coated interior pipe, mu, differs from 2 micrometers.
+```{r Q4A}
+pipe = c(1.72, 2.50, 2.16, 2.13, 1.06, 2.24, 2.31, 2.03, 1.09, 1.40, 2.57, 2.64, 1.26, 2.05, 1.19, 2.13, 1.27, 1.51, 2.41, 1.95)
+lengthPipe = length(pipe)
+meanPipe = mean(pipe)
+meanPipe
+```
+The null hypotheses is 1.881 and alternative is not 1.881.
+
+b) The results of the test, part a, are shown in the MINITAB printout at the bottom of the page. Locate the test statistic and p-value on the printout. The test statistic is -1.02 and p-value is 0.322.
+
+## Question 5
+8.28 Dissolved organic compound in lakes - page 392
+
+a) Use a hypotheses test (at alpha = 0.10) to make an inference about whether the sample is representative of all Wisconsin lakes for the characteristic, dissolved organic compound. Calculating for t-stats below gives us a tcalc of -0.186. The tcalc being negative means the sample is not representative of all Wisconsin lakes.
+```{r Q5A}
+wisclakes = c(9.6, 4.5, 13.2, 4.1, 22.6, 2.7, 14.7, 3.5, 13.6, 19.8, 14.3, 56.9, 25.1, 18.4, 2.7, 4.2, 30.2, 10.3, 17.6, 2.4, 17.3, 38.8, 3.0, 5.8, 7.6)
+meanDOC = mean(wisclakes)
+sdDOC = sqrt(var(wisclakes))
+lengthDOC = length(wisclakes)
+
+tcalc = (meanDOC-15)/(sdDOC/sqrt(lengthDOC))
+tcalc
+```
+
+b) What is the likelihood that the test, part a, will detect a mean that differs from 15 grams/m^3 if, in fact, mu_0 = 14 grams/m^3?
+$$
+\bar{y}=\mu_0-t\frac{s}{sqrt(n)} \\
+\bar{y}=\mu_0+t\frac{s}{sqrt(n)} \\
+$$
+
+$$
+\bar{y}=15-(-0.185)\frac{12.96}{sqrt(25)} = 15.48 \\
+\bar{y}=15+(-0.185)\frac{12.96}{sqrt(25)} = 14.52 \\
+$$
+
+## Question 6
+8.44 Insecticides used in orchards - page 401
+```{r Q6}
+orchards = read.csv("ORCHARD.csv")
+orchards
+
+# Size of foggy data.
+n1 = 8
+# Size of cloudy/clear data.
+n2 = 4
+
+# Standard deviation of foggy data.
+s1foggy = with(orchards, orchards[CONDITION=="FOG" & RATIO!="",])
+s1 = 0.1186
+sd(s1foggy$RATIO)
+y1 = 0.2738
+
+# Standard deviation of cloudy/clear data.
+s2clear = with(orchards, orchards[CONDITION=="CLEAR" | CONDITION=="CLOUD",])
+s2 = sd(s2clear$RATIO)
+y2 = mean(s2clear$RATIO)
+
+# Calculations for the formula for test statistics.
+sp = ((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)
+
+tcalc = ((y1-y2)-0)/(sqrt(sp*((1/n1)+(1/n2))))
+tcalc
+```
+
+## Question 7
+8.84 Cooling methods for gas turbines - page 425.
+
+Conduct a test (at alpha = 0.05) for equality of heat rate variances for traditional and aeroderivative augmented gas turbines. Use the result to make a statement about the validity of the inference derived in Exercise 8.33a.
+```{r Q7A}
+gasturbine = read.csv("GASTURBINE.csv")
+gas_traditional = with(gasturbine, gasturbine[ENGINE=="Traditional",])
+gas_aeroderiv = with(gasturbine, gasturbine[ENGINE=="Aeroderiv",])
+
+x = rnorm(gas_traditional$HEATRATE, mean = mean(gas_traditional$HEATRATE, sd = sd(gas_traditional$HEATRATE)))
+y = rnorm(gas_aeroderiv$HEATRATE, mean = mean(gas_aeroderiv$HEATRATE), sd = sd(gas_aeroderiv$HEATRATE))
+
+var.test(x, y, conf.level = 0.95)
+```
+
+Conduct a test (at alpha = 0.05) for equality of heat rate variances for advanced and aeroderivative augmented gas turbines. Use the result to make a statement about the validity of the inference derived in Exercise 8.33b.
+```{r Q7B}
+gas_augmented = with(gasturbine, gasturbine[ENGINE=="Advanced",])
+z = rnorm(gas_augmented, mean = mean(gas_augmented$HEATRATE), sd = sd(gas_augmented$HEATRATE))
+
+var.test(y, z, conf.level = 0.95)
+```
+
+## Question 8
+8.99 Mongolian desert ants - page 438.
+
+a) Set up H0 and H1 for determining whether the variances are the same.
+```{r Q8A}
+gobiants = read.csv("GOBIANTS.csv")
+dry_ants = with(gobiants, gobiants[Region!="Gobi Desert",])
+gobi_ants = with(gobiants, gobiants[Region=="Gobi Desert",])
+
+x = rnorm(dry_ants$AntSpecies, mean = mean(dry_ants$AntSpecies, sd = sd(dry_ants$AntSpecies)))
+y = rnorm(gobi_ants$AntSpecies, mean = mean(gobi_ants$AntSpecies), sd = sd(gobi_ants$AntSpecies))
+
+var.test(x, y, 0.95)
+```
+
+b) Use the data in the GOBIANTS file to find the test statistic for the test.
+```{r Q8B}
+tcalc =(x-mean(gobiants$AntSpecies))/((sd(gobiants$AntSpecies))/(length(gobiants)))
+tcalc
+```
+
+c) Give the rejection region for the test if alpha = 0.05. Rejection region is outside the 0.00089 and 0.061.
+
+d) Find the approximate p-value of the test. p-value = 0.0002614.
+
+e) Make the appropriate conclusion in the words of the problem. Basics of var.test with p-value, CI with acceptance and rejection region, and degrees of freedom.
+
+f) What conditions are required for the test results be valid? Variances be equal.
+
+## Question 9
+8.104 Real-time scheduling with robots - page 439.
+```{r Q9}
+thruput = read.csv("THRUPUT.csv")
+
+# Null hypotheses.
+h0 = mean(thruput$HUMAN)-mean(thruput$AUTO)
+n = 8
+
+tcalc = (-32.6-0)/(35/sqrt(n))
+tcalc
+```
+
+## Question 10
+Using and making adjustments to myboot function.
+```{r Q10}
+set.seed(35); sam<-round(rnorm(30,mean=20,sd=3),3)
+MATH4753NGUY0132::ASS4myboot(10000,x=sam,alpha=0.05,xlab="mean(x)/median(x)")
+```
+
